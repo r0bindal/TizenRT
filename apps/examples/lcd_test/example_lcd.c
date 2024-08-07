@@ -107,6 +107,15 @@ static void putarea(int x1, int x2, int y1, int y2, int color)
 		lcd_data[i] = (color & 0xFF00) >> 8;
 		lcd_data[i + 1] = color & 0x00FF;
 	}
+	for(int i=0; i < yres * 2 * 30 ; i+=2){
+		lcd_data[i] = (0xE007 & 0xFF00) >> 8;
+		lcd_data[i + 1] = 0xE007 & 0x00FF;
+	}
+	for(int i=0; i< yres ;i+=2){
+		lcd_data[i] = (0xFFFF & 0xFF00) >> 8;
+		lcd_data[i + 1] = 0xFFFF & 0x00FF;
+	}
+	
 
 	area.data = lcd_data;
 	ioctl(fd, LCDDEVIO_PUTAREA, (unsigned long)(uintptr_t)&area);
@@ -186,18 +195,21 @@ static void test_put_area_pattern(void)
 	ioctl(fd, LCDDEVIO_GETVIDEOINFO, (unsigned long)(uintptr_t)&vinfo);
 	xres = vinfo.xres;
 	yres = vinfo.yres;
-	printf("xres : %d, yres:%d\n", xres, yres);
-	close(fd);
-	putarea(0, yres - 1, 0, xres - 1, BLUE);
-	sleep(3);
-	putarea(0, yres - 1, 0, xres - 1, GREEN);
-	sleep(3);
-	putarea(0, yres - 1, 0, xres - 1, RED);
-	sleep(3);
-	putarea(0, yres - 1, 0, xres - 1, BLACK);
-	sleep(3);
-	putarea(0, yres - 1, 0, xres - 1, WHITE);
-	sleep(3);
+
+	putarea(0, xres - 1, 0, yres - 1, RED);
+
+	// printf("xres : %d, yres:%d\n", xres, yres);
+	// close(fd);
+	// putarea(0, yres - 1, 0, xres - 1, BLUE);
+	// sleep(3);
+	// putarea(0, yres - 1, 0, xres - 1, GREEN);
+	// sleep(3);
+	// putarea(0, yres - 1, 0, xres - 1, RED);
+	// sleep(3);
+	// putarea(0, yres - 1, 0, xres - 1, BLACK);
+	// sleep(3);
+	// putarea(0, yres - 1, 0, xres - 1, WHITE);
+	// sleep(3);
 }
 
 static unsigned short generate_color_code(int red, int green, int blue)
@@ -377,17 +389,19 @@ int lcd_test_main(int argc, char *argv[])
 		printf("ERROR: Failed to open lcd port : %s error:%d\n", port, fd);
 		return;
 	}
-	while (count < 5) {
-		test_put_area_pattern();
-		test_bit_map();
-		sleep(3);
-		ioctl(fd, LCDDEVIO_SETPOWER, 0);
-		sleep(15);
-		ioctl(fd, LCDDEVIO_SETPOWER, 100);
-		count++;
-		printf("count :%d\n", count);
-	}
-	test_fps();
+	
+test_put_area_pattern();
+	// while (count < 5) {
+	//	test_put_area_pattern();
+	// 	test_bit_map();
+	// 	sleep(3);
+	// 	ioctl(fd, LCDDEVIO_SETPOWER, 0);
+	// 	sleep(15);
+	// 	ioctl(fd, LCDDEVIO_SETPOWER, 100);
+	// 	count++;
+	// 	printf("count :%d\n", count);
+	// }
+	// test_fps();
 	close(fd);
 	return 0;
 }

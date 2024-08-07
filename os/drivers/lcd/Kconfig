@@ -1,7 +1,7 @@
-#
-# For a description of the syntax of this configuration file,
-# see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
-#
+// #
+// # For a description of the syntax of this configuration file,
+// # see kconfig-language at https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt
+// #
 
 menu "LCD Driver Support"
 
@@ -124,6 +124,12 @@ config LCD_ST7701SN
 	bool "ST7701SN LCD Driver"
 	---help---
 		Enable LCD Driver, ST7701SN with mipi.
+
+config LCD_ST7701SN_ROTATION
+	bool "ST7701SN LCD Driver Rotation"
+	---help---
+		Enable LCD Rotation, ST7701SN with mipi.
+
 
 config LCD_ST7785
 	bool "ST7785 LCD Driver"
